@@ -130,7 +130,31 @@ def _prepare_measurement_payload(
         data["finding"] = payload["finding"]
 
     return data
+def get_measurement_by_tooth(
+    examination_id: str,
+    tooth_number: int,
+) -> dict | None:
+    """
+    Find an existing clinical measurement for a tooth
+    within the current examination.
 
+    Returns the existing row or None if the tooth
+    has not yet been recorded in this examination.
+    """
+    client = get_client()
+
+    response = (
+        client.table("clinical_measurements")
+        .select("*")
+        .eq("examination_id", examination_id)
+        .eq("tooth_number", tooth_number)
+        .execute()
+    )
+
+    if not response.data:
+        return None
+
+    return response.data[0]
 def save_measurement(payload: dict[str, Any]) -> dict:
     """
     Insert a new clinical measurement row.
