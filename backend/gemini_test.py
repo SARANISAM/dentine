@@ -40,7 +40,7 @@ UPDATE:
   "tooth": 16,
   "pocket_depth": [3, 2, 4],
   "recession": [1, 0, 1],
-  "bleeding": true,
+  "bleeding": [true, false, true],
   "mobility": 0,
   "finding": null
 }}
@@ -60,43 +60,63 @@ NEEDS CONFIRMATION:
 }}
 
 Rules:
+
 1. Return only one valid JSON object.
+
 2. Do not return Markdown or explanations.
+
 3. Do not guess missing values.
+
 4. Use null for missing update fields.
+
 5. Convert spoken tooth numbers into integers.
+
 6. Pocket depth must contain exactly three values when provided.
+
 7. Recession must contain exactly three values when provided.
+
 8. Bleeding must always be represented as an array of exactly three Boolean values when updating a tooth.
+
 9. The three bleeding values correspond to the three periodontal sites in the same order as pocket_depth and recession.
+
 10. "Bleeding at site 1" means [true, false, false].
+
 11. "Bleeding at site 2" means [false, true, false].
+
 12. "Bleeding at site 3" means [false, false, true].
+
 13. "Bleeding at sites 1 and 3" means [true, false, true].
+
 14. "Bleeding at all three sites" means [true, true, true].
+
 15. "No bleeding" means [false, false, false].
+
 16. Do not guess a bleeding site if the transcript does not specify it.
+
 17. If the dentist says words such as "no", "sorry", "correction", "I mean", "change", or "actually", treat the latest information as the correct one.
 
 18. Ignore the incorrect value and keep only the final corrected value.
 
-19. If the correction changes the tooth number, return:
-{
+19. If the correction changes the tooth number, return this structure:
+
+{{
   "action": "correction",
   "tooth": corrected_tooth_number,
   "target": "<field_name>",
-  "value": <corrected_value>
-}
+  "value": "<corrected_value>"
+}}
 
 20. Examples:
+
 "Tooth 4 bleeding. No, tooth 5."
-→ tooth = 5
+The final tooth is 5.
 
 "Pocket depth 3 2 4. Sorry, 3 3 4."
-→ pocket_depth = [3,3,4]
+The final pocket depth is [3, 3, 4].
 
 "Mobility 2. Actually mobility 1."
-→ mobility = 1
+The final mobility is 1.
+
 Dentist transcript:
 {transcript}
 """
@@ -109,7 +129,8 @@ Dentist transcript:
                     {
                         "role": "system",
                         "content": (
-                            "Return only valid JSON. "
+                            "You are a dental periodontal chart extraction assistant. "
+                            "Return only one valid JSON object. "
                             "Do not use Markdown or explanations."
                         )
                     },
@@ -138,6 +159,7 @@ Dentist transcript:
 
             print("\nFinal JSON:")
             print(json.dumps(final_json, indent=2))
+
             return
 
         except json.JSONDecodeError:
@@ -145,7 +167,15 @@ Dentist transcript:
             return
 
         except Exception as error:
-            print(f"\nAPI request failed: {error}")
+            error_text = str(error)
+
+            print(f"\nAPI request failed: {error_text}")
+
+            if "404" in error_text or "model_not_found" in error_text:
+                print("\nThe selected Groq model is not available.")
+                print(f"Current model: {MODEL_NAME}")
+                print("Check the available models using your model-list script.")
+                return
 
             if attempt < 2:
                 print("Retrying in 10 seconds...")
