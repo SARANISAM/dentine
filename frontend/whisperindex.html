@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dental Voice Transcriber</title>
+</head>
+
+<body>
+
+    <h1>Dental Voice Transcriber</h1>
+
+    <button id="startBtn">🎤 Start Recording</button>
+    <button id="stopBtn" disabled>⏹ Stop Recording</button>
+
+    <p id="status">Ready</p>
+
+    <h3>Transcript:</h3>
+    <p id="transcript"></p>
+
+    <script>
+        let recorder;
+        let audioChunks = [];
+
+        const startBtn = document.getElementById("startBtn");
+        const stopBtn = document.getElementById("stopBtn");
+        const status = document.getElementById("status");
+        const transcript = document.getElementById("transcript");
+
+        // START RECORDING
+        startBtn.onclick = async () => {
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: true
+            });
+
+            recorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            recorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            recorder.start();
+
+            status.textContent = "🎤 Recording...";
+            transcript.textContent = "";
+
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+        };
+
+
+        // STOP RECORDING
+        stopBtn.onclick = () => {
+
+            recorder.stop();
+
+            status.textContent = "⏳ Processing...";
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        };
+
+
+        // WHEN RECORDING STOPS
+        // Send audio to Flask
+        function sendAudioToBackend() {
+
+            const audioBlob = new Blob(audioChunks, {
+                type: "audio/webm"
+            });
+
+            const formData = new FormData();
+
+            formData.append("audio", audioBlob, "recording.webm");
+
+
+            fetch("/api/transcribe", {
+                method: "POST",
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    if (data.transcript) {
+
+                        transcript.textContent = data.transcript;
+                        status.textContent = "✅ Transcription complete";
+
+                    } else {
+
+                        status.textContent = "❌ Transcription failed";
+                        transcript.textContent = data.error;
+
+                    }
+
+                })
+                .catch(error => {
+
+                    status.textContent = "❌ Error";
+                    transcript.textContent = error;
+
+                });
+        }
+
+
+        // Call backend after recorder stops
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Wait until recorder exists
+            setInterval(() => {
+
+                if (recorder && recorder.state === "inactive" && audioChunks.length > 0) {
+
+                    if (!recorder.sent) {
+
+                        recorder.sent = true;
+                        sendAudioToBackend();
+
+                    }
+
+                }
+
+            }, 100);
+
+        });
+
+    </script>
+
+</body>
+
+</html>
