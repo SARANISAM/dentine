@@ -227,7 +227,7 @@ each tooth.
 | ----------------------------------------------------- | ------------------------------------ |
 | [Screenshot 1](./assets/screenshots/screenshot-1.png) | [What it shows]                      |
 | [Screenshot 2](./assets/screenshots/screenshot-2.png) | [What it shows]                      |
-| [Pitch Video](./assets/pitch/README.md)               | Link to your >30s social pitch video |
+| [Pitch Video](https://drive.google.com/drive/folders/1gWClxKhs-VdYSyI8gFADTjk2ZM58ehpz)               | Link to your >30s social pitch video |
 
 ---
 
