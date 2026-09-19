@@ -7,3 +7,5 @@ httpx
 python-multipart
 groq
 gunicorn
+flask
+faster-whisper
