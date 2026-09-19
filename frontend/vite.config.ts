@@ -1,4 +1,3 @@
-// c:\Users\arunm\Downloads\Dent\dentine\frontend\vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -6,7 +5,18 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
-    strictPort: false, // automatically try next port if 5173 is busy
+    strictPort: false,
+    proxy: {
+      '/api/transcribe': {
+        target: 'http://127.0.0.1:5000',
+        changeOrigin: true,
+      },
+      '/api/clinical': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
   },
 });
+
 
