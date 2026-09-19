@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Chart from './pages/Chart';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import { supabase } from './src/lib/supabase';
+import { supabase } from './lib/supabase';
 import type { Session } from '@supabase/supabase-js';
 
 // Wraps protected routes — redirects to /login when there is no active session.
