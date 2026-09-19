@@ -10,8 +10,8 @@
 | **Team Name:**    | Nova                                      |
 | **Team Members:** | Sara Nisam , Fida Noushad CT , Arun Mathews , Anlet ER |
 | **Institution:**  | Rajiv Gandhi Institute of Technology, Kottayam |
-| **Live Demo:**    | [Demo link goes here]                     |
-| **Pitch Video:**  | [Social media pitch video link]           |
+| **Live Demo:**    | https://drive.google.com/file/d/1TVr8luyjLpWfdIDCHcfZH9kgJFGmtYdm/view?usp=drivesdk                     |
+| **Pitch Video:**  | https://drive.google.com/file/d/1gLKJMbLdI1VsFEcXxH7VZyogX3nwbX4C/view?usp=drivesdk           |
 
 ---
 
@@ -227,7 +227,7 @@ each tooth.
 | ----------------------------------------------------- | ------------------------------------ |
 | [Screenshot 1](https://drive.google.com/file/d/1vQr74DbJeh-Njm6oTXnltAqIaAuknIx9/view?usp=drivesdk) | [What it shows]                      |
 | [Screenshot 2](https://drive.google.com/file/d/1LXrqvYOMDgt0kFmIRUbn3RCdkOruTuYV/view?usp=drivesdk) | [What it shows]                      |
-| [Pitch Video](https://drive.google.com/drive/folders/1gWClxKhs-VdYSyI8gFADTjk2ZM58ehpz)               | Link to your >30s social pitch video |
+| [Pitch Video](https://drive.google.com/file/d/1gLKJMbLdI1VsFEcXxH7VZyogX3nwbX4C/view?usp=drivesdk)               | Link to your >30s social pitch video |
 
 ---
 
