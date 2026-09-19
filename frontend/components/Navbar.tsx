@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "./lib/supabase";
+import { supabase } from "../lib/supabase";
 
 function Navbar() {
     const navigate = useNavigate();
